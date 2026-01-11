@@ -127,10 +127,9 @@ export default function RandomPage() {
 
         {/* Headline */}
         <section className="mb-8">
-          <blockquote className="text-3xl md:text-4xl font-serif leading-tight mb-6">
-            <span className="text-highlight">"</span>
+          <blockquote className="relative text-3xl md:text-4xl font-serif leading-tight mb-6 pl-8 md:pl-12">
+            <span className="absolute left-0 top-0 text-6xl md:text-7xl text-highlight font-serif leading-none -translate-y-2">"</span>
             {headline.headline}
-            <span className="text-highlight">"</span>
           </blockquote>
           <p className="font-mono text-sm text-muted">
             Guess the year, or skip to browse.
