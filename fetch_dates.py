@@ -119,39 +119,38 @@ def fetch_dates_for_articles(input_file=None, output_file=None, max_workers=10, 
     print(f"Saving progress every {save_interval} articles...")
     
     # Process articles concurrently
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = []
-        
-        for article in articles_needing_dates:
-            future = executor.submit(
-                process_article,
-                article,
-                url_to_index,
-                lock,
-                save_counter,
-                save_interval,
-                articles,
-                output_file
-            )
-            futures.append(future)
-            time.sleep(delay)  # Rate limiting
-        
-        # Process results as they complete
-        completed = 0
-        for future in as_completed(futures):
-            completed += 1
-            if completed % 50 == 0:
-                print(f"Processed {completed}/{total_needing_dates} articles...")
-    
-    # Final save
-    print("Saving final results...")
-    save_articles(articles, output_file)
-    
-    # Count how many got dates
-    articles_with_dates = sum(1 for a in articles if a.get('date'))
-    print(f"\nCompleted!")
-    print(f"Articles with dates: {articles_with_dates}/{total_articles}")
-    print(f"Saved to {output_file}")
+    try:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = []
+            
+            for article in articles_needing_dates:
+                future = executor.submit(
+                    process_article,
+                    article,
+                    url_to_index,
+                    lock,
+                    save_counter,
+                    save_interval,
+                    articles,
+                    output_file
+                )
+                futures.append(future)
+                time.sleep(delay)  # Rate limiting
+            
+            # Process results as they complete
+            completed = 0
+            for future in as_completed(futures):
+                completed += 1
+                if completed % 50 == 0:
+                    print(f"Processed {completed}/{total_needing_dates} articles...")
+    except KeyboardInterrupt:
+        print("\n\nInterrupted! Saving progress...")
+    finally:
+        # Always save on exit
+        print("Saving results...")
+        save_articles(articles, output_file)
+        articles_with_dates = sum(1 for a in articles if a.get('date'))
+        print(f"Saved {articles_with_dates}/{total_articles} articles with dates to {output_file}")
 
 if __name__ == "__main__":
     import sys
@@ -169,7 +168,7 @@ if __name__ == "__main__":
     
     fetch_dates_for_articles(
         max_workers=10,      # Adjust based on your needs (more = faster but more server load)
-        save_interval=100,   # Save every 100 dates fetched
+        save_interval=1000,   # Save every 100 dates fetched
         delay=0,           # 100ms delay between requests
         max_articles=max_articles
     )
