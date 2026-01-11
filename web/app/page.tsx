@@ -31,33 +31,69 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-[80vh] flex items-center justify-center px-4 py-20">
-        <div className="max-w-2xl text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-8">
-            {yearSpan}+ years of satire, indexed
-          </p>
+      <main className="min-h-[80vh] flex items-center justify-center px-4 py-16">
+        <div className="max-w-3xl w-full">
+          {/* Hero */}
+          <div className="text-center mb-12">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-6">
+              {yearSpan}+ years of satire, indexed
+            </p>
+            <h1 className="font-serif text-5xl md:text-7xl font-black mb-6 leading-none tracking-tight">
+              ONION
+              <br />
+              <span className="italic font-normal">History</span>
+            </h1>
+            <p className="font-mono text-sm text-muted max-w-md mx-auto">
+              {totalHeadlines.toLocaleString()} headlines. Every day is a good
+              day to remember what didn't happen.
+            </p>
+          </div>
 
-          <h1 className="font-serif text-6xl md:text-8xl font-black mb-8 leading-none tracking-tight">
-            ONION
-            <br />
-            <span className="italic font-normal">History</span>
-          </h1>
-
-          <p className="font-mono text-sm text-muted mb-12 max-w-md mx-auto">
-            Browse {totalHeadlines.toLocaleString()} headlines by date.
-            <br />
-            Every day is a good day to remember what didn't happen.
-          </p>
-
-          {todaySlug ? (
-            <Link href={`/${todaySlug}`} className="btn-primary">
-              {todayDisplay} →
+          {/* Two choices */}
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Random */}
+            <Link
+              href="/random"
+              className="block p-8 border-2 border-ink hover:bg-highlight hover:border-highlight hover:text-cream transition-all group"
+            >
+              <p className="font-mono text-xs uppercase tracking-wider text-muted group-hover:text-cream/70 mb-3">
+                Discovery mode
+              </p>
+              <h2 className="font-serif text-2xl md:text-3xl font-bold mb-3">
+                Random headline
+              </h2>
+              <p className="font-mono text-sm text-muted group-hover:text-cream/70">
+                Guess the year or just browse the archive one headline at a time.
+              </p>
             </Link>
-          ) : (
-            <span className="btn-primary opacity-50">Loading...</span>
-          )}
 
-          <p className="font-mono text-xs text-muted mt-6">(That's today)</p>
+            {/* On This Day */}
+            {todaySlug ? (
+              <Link
+                href={`/${todaySlug}`}
+                className="block p-8 border-2 border-ink hover:bg-highlight hover:border-highlight hover:text-cream transition-all group"
+              >
+                <p className="font-mono text-xs uppercase tracking-wider text-muted group-hover:text-cream/70 mb-3">
+                  On this day
+                </p>
+                <h2 className="font-serif text-2xl md:text-3xl font-bold mb-3">
+                  {todayDisplay}
+                </h2>
+                <p className="font-mono text-sm text-muted group-hover:text-cream/70">
+                  See every headline published on today's date across 30+ years.
+                </p>
+              </Link>
+            ) : (
+              <div className="block p-8 border-2 border-rule">
+                <p className="font-mono text-xs uppercase tracking-wider text-muted mb-3">
+                  On this day
+                </p>
+                <h2 className="font-serif text-2xl md:text-3xl font-bold mb-3 text-muted">
+                  Loading...
+                </h2>
+              </div>
+            )}
+          </div>
         </div>
       </main>
       <Footer />
