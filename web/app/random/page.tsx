@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import byDayData from "@/data/by-day.json";
@@ -29,8 +30,8 @@ const allYears = [...new Set(allHeadlines.map((h) => h.year))].sort(
   (a, b) => a - b
 );
 
-function getRandomHeadline(): Headline {
-  return allHeadlines[Math.floor(Math.random() * allHeadlines.length)];
+function getRandomIndex(): number {
+  return Math.floor(Math.random() * allHeadlines.length);
 }
 
 function generateChoices(correctYear: number): number[] {
@@ -47,30 +48,49 @@ function generateChoices(correctYear: number): number[] {
 }
 
 export default function RandomPage() {
-  const [headline, setHeadline] = useState<Headline | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [headlineIndex, setHeadlineIndex] = useState<number | null>(null);
   const [choices, setChoices] = useState<number[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
   const [skipped, setSkipped] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [score, setScore] = useState<{ correct: number; total: number }>({
     correct: 0,
     total: 0,
   });
 
-  const newHeadline = useCallback(() => {
-    const h = getRandomHeadline();
-    setHeadline(h);
-    setChoices(generateChoices(h.year));
+  const loadHeadline = useCallback((index: number) => {
+    setHeadlineIndex(index);
+    setChoices(generateChoices(allHeadlines[index].year));
     setSelected(null);
     setSkipped(false);
+    setCopied(false);
+    // Update URL without navigation
+    window.history.replaceState(null, "", `/random?h=${index}`);
   }, []);
 
+  const newHeadline = useCallback(() => {
+    loadHeadline(getRandomIndex());
+  }, [loadHeadline]);
+
   useEffect(() => {
+    const hParam = searchParams.get("h");
+    if (hParam) {
+      const index = parseInt(hParam, 10);
+      if (!isNaN(index) && index >= 0 && index < allHeadlines.length) {
+        loadHeadline(index);
+        return;
+      }
+    }
     newHeadline();
-  }, [newHeadline]);
+  }, [searchParams, loadHeadline, newHeadline]);
 
   const handleSelect = (year: number) => {
-    if (selected !== null || skipped || !headline) return;
+    if (selected !== null || skipped || headlineIndex === null) return;
     setSelected(year);
+    const headline = allHeadlines[headlineIndex];
     if (year === headline.year) {
       setScore((s) => ({ correct: s.correct + 1, total: s.total + 1 }));
     } else {
@@ -83,8 +103,16 @@ export default function RandomPage() {
     setSkipped(true);
   };
 
-  if (!headline) return null;
+  const handleCopyLink = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
+  if (headlineIndex === null) return null;
+
+  const headline = allHeadlines[headlineIndex];
   const isRevealed = selected !== null || skipped;
   const isCorrect = selected === headline.year;
 
@@ -151,7 +179,7 @@ export default function RandomPage() {
               </p>
             )}
 
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               <button onClick={newHeadline} className="btn-primary">
                 Next →
               </button>
@@ -163,6 +191,12 @@ export default function RandomPage() {
               >
                 Read article
               </a>
+              <button
+                onClick={handleCopyLink}
+                className="font-mono text-sm text-muted hover:text-ink transition-colors py-3"
+              >
+                {copied ? "Copied!" : "Share link"}
+              </button>
             </div>
           </section>
         )}
