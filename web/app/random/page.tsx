@@ -36,8 +36,8 @@ function getRandomHeadline(): Headline {
 function generateChoices(correctYear: number): number[] {
   const choices = new Set<number>([correctYear]);
 
-  // Add 4 random wrong years
-  while (choices.size < 5) {
+  // Add 2 random wrong years (3 total)
+  while (choices.size < 3) {
     const randomYear = allYears[Math.floor(Math.random() * allYears.length)];
     choices.add(randomYear);
   }
@@ -50,6 +50,7 @@ export default function RandomPage() {
   const [headline, setHeadline] = useState<Headline | null>(null);
   const [choices, setChoices] = useState<number[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
+  const [skipped, setSkipped] = useState(false);
   const [score, setScore] = useState<{ correct: number; total: number }>({
     correct: 0,
     total: 0,
@@ -60,6 +61,7 @@ export default function RandomPage() {
     setHeadline(h);
     setChoices(generateChoices(h.year));
     setSelected(null);
+    setSkipped(false);
   }, []);
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function RandomPage() {
   }, [newHeadline]);
 
   const handleSelect = (year: number) => {
-    if (selected !== null || !headline) return;
+    if (selected !== null || skipped || !headline) return;
     setSelected(year);
     if (year === headline.year) {
       setScore((s) => ({ correct: s.correct + 1, total: s.total + 1 }));
@@ -76,9 +78,14 @@ export default function RandomPage() {
     }
   };
 
+  const handleSkip = () => {
+    if (selected !== null || skipped) return;
+    setSkipped(true);
+  };
+
   if (!headline) return null;
 
-  const isRevealed = selected !== null;
+  const isRevealed = selected !== null || skipped;
   const isCorrect = selected === headline.year;
 
   return (
@@ -90,7 +97,7 @@ export default function RandomPage() {
             Random headline
           </h1>
           <p className="font-mono text-sm text-muted">
-            Can you guess when The Onion published this headline?
+            Guess the year, or skip to just browse.
           </p>
         </header>
 
@@ -103,49 +110,47 @@ export default function RandomPage() {
         </section>
 
         {/* Choices */}
-        <section className="mb-8">
-          <div className="grid grid-cols-5 gap-2">
-            {choices.map((year) => {
-              let className =
-                "py-3 font-mono text-sm border-2 transition-all cursor-pointer ";
-
-              if (!isRevealed) {
-                className += "border-ink hover:bg-highlight hover:text-cream hover:border-highlight";
-              } else if (year === headline.year) {
-                className += "bg-highlight text-cream border-highlight";
-              } else if (year === selected) {
-                className += "bg-ink text-cream border-ink";
-              } else {
-                className += "border-rule text-muted";
-              }
-
-              return (
+        {!isRevealed && (
+          <section className="mb-8">
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {choices.map((year) => (
                 <button
                   key={year}
                   onClick={() => handleSelect(year)}
-                  disabled={isRevealed}
-                  className={className}
+                  className="py-3 font-mono text-sm border-2 border-ink hover:bg-highlight hover:text-cream hover:border-highlight transition-all cursor-pointer"
                 >
                   {year}
                 </button>
-              );
-            })}
-          </div>
-        </section>
+              ))}
+            </div>
+            <button
+              onClick={handleSkip}
+              className="font-mono text-sm text-muted hover:text-ink transition-colors"
+            >
+              Skip →
+            </button>
+          </section>
+        )}
 
         {/* Result */}
         {isRevealed && (
           <section className="mb-8">
-            <p className="font-mono text-sm mb-6">
-              {isCorrect ? (
-                <span className="text-highlight font-bold">Correct!</span>
-              ) : (
-                <span>
-                  Nope — it was{" "}
-                  <span className="font-bold">{headline.year}</span>
-                </span>
-              )}
-            </p>
+            {skipped ? (
+              <p className="font-mono text-sm text-muted mb-6">
+                Published in <span className="text-ink font-bold">{headline.year}</span>
+              </p>
+            ) : (
+              <p className="font-mono text-sm mb-6">
+                {isCorrect ? (
+                  <span className="text-highlight font-bold">Correct!</span>
+                ) : (
+                  <span>
+                    Nope — it was{" "}
+                    <span className="font-bold">{headline.year}</span>
+                  </span>
+                )}
+              </p>
+            )}
 
             <div className="flex gap-4">
               <button onClick={newHeadline} className="btn-primary">
