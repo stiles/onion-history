@@ -9,11 +9,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Onion History",
     description: "35,000 headlines. Zero facts. Lots of laughs.",
+    url: "https://onionhistory.com",
     siteName: "Onion History",
     type: "website",
+    locale: "en_US",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://onionhistory.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "Onion History - An archive of The Onion headlines",
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Onion History",
     description: "35,000 headlines. Zero facts. Lots of laughs.",
-    images: ["/og-image.png"],
+    images: ["https://onionhistory.com/og-image.png"],
   },
 };
 

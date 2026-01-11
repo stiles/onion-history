@@ -5,6 +5,15 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About — Onion History",
   description: "About this unofficial archive of The Onion headlines",
+  openGraph: {
+    title: "About — Onion History",
+    description: "About this unofficial archive of The Onion headlines",
+    url: "https://onionhistory.com/about",
+  },
+  twitter: {
+    title: "About — Onion History",
+    description: "About this unofficial archive of The Onion headlines",
+  },
 };
 
 export default function AboutPage() {

@@ -27,9 +27,21 @@ export async function generateMetadata({ params }: PageProps) {
   if (!parsed) return { title: "Not Found" };
 
   const displayDate = formatDisplayDate(parsed.month, parsed.day);
+  const title = `${displayDate} — Onion History`;
+  const description = `Browse Onion headlines published on ${displayDate} across 30+ years`;
+  
   return {
-    title: `${displayDate} — Onion History`,
-    description: `Browse Onion headlines published on ${displayDate} across 30+ years`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://onionhistory.com/${slug}`,
+    },
+    twitter: {
+      title,
+      description,
+    },
   };
 }
 
