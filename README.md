@@ -27,10 +27,13 @@ Outputs static files to `web/out/`, ready for deployment to Vercel or any static
 ### Scraping headlines
 
 ```bash
-uv run python fetch.py
+uv run python fetch.py                    # Scrape all sections, resume from last run
+uv run python fetch.py --section news     # Scrape just news section
+uv run python fetch.py --fresh            # Start fresh, ignore existing data
+uv run python fetch.py --workers 8        # More parallel workers (default: 4)
 ```
 
-Scrapes headlines from The Onion's "The Latest" section. Saves incrementally, resumes if interrupted.
+Scrapes headlines from The Onion's section news pages: news, local, politics, latest (not sports, opinion, entertainment, etc.). Uses parallel fetching, saves every 1000 articles, resumes per-section if interrupted.
 
 ### Fetching dates
 
@@ -78,13 +81,15 @@ cd web && npm run preprocess
 
 ## Data format
 
-Each headline in `data/headlines.json`:
+Each headline in `data/headlines.json` (about 35,000 headlines):
 
 ```json
 {
   "headline": "Area Man Passionate Defender Of What He Imagines Constitution To Be",
   "url": "https://theonion.com/...",
   "tag": "News",
+  "section": "latest",
+  "page": 42,
   "date": "2009-11-14T00:00:00-06:00"
 }
 ```
