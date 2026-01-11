@@ -36,7 +36,7 @@ export default function Home() {
           {/* Hero */}
           <div className="text-center mb-12">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-6">
-              {yearSpan}+ years of satire, indexed
+              Decades of online satire, indexed
             </p>
             <h1 className="font-serif text-5xl md:text-7xl font-black mb-6 leading-none tracking-tight">
               ONION

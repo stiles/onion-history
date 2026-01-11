@@ -1,6 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getTodaySlug } from "@/lib/dates";
 
 export function Footer() {
+  const [todaySlug, setTodaySlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTodaySlug(getTodaySlug());
+  }, []);
+
   return (
     <footer className="bg-ink text-cream mt-16 font-sans">
       <div className="max-w-4xl mx-auto px-4 py-12">
@@ -46,6 +56,16 @@ export function Footer() {
                 Site
               </h4>
               <ul className="space-y-2">
+                {todaySlug && (
+                  <li>
+                    <Link
+                      href={`/${todaySlug}`}
+                      className="text-cream/80 hover:text-cream transition-colors"
+                    >
+                      Today
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link
                     href="/random"
