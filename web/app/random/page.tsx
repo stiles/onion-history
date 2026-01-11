@@ -92,21 +92,20 @@ export default function RandomPage() {
     <>
       <Header />
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-16">
-        <header className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-serif font-black tracking-tight mb-4">
-            Random headline
-          </h1>
-          <p className="font-mono text-sm text-muted">
-            Guess the year, or skip to just browse.
+        <header className="mb-8">
+          <p className="font-mono text-xs uppercase tracking-wider text-muted">
+            Random headline · {headline.tag}
           </p>
         </header>
 
         {/* Headline */}
         <section className="mb-8">
-        <p className="font-mono text-sm text-muted">{headline.tag}</p>
-          <blockquote className="text-2xl md:text-3xl font-serif leading-tight mb-4">
+          <blockquote className="text-3xl md:text-4xl font-serif leading-tight mb-6">
             "{headline.headline}"
           </blockquote>
+          <p className="font-mono text-sm text-muted">
+            Guess the year, or skip to browse.
+          </p>
         </section>
 
         {/* Choices */}
