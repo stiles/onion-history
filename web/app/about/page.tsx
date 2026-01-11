@@ -13,7 +13,7 @@ export default function AboutPage() {
       <Header />
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-16">
         <header className="mb-12">
-          <p className="section-label mb-4">The fine print</p>
+          <p className="section-label mb-4">What's going on here?</p>
           <h1 className="text-5xl md:text-6xl font-serif font-black tracking-tight">
             About
           </h1>
