@@ -36,7 +36,7 @@ export default function Home() {
           {/* Hero */}
           <div className="text-center mb-12">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-6">
-              An archive of The Onion headlines
+              An archive of <em className="text-highlight not-italic">The Onion</em> headlines
             </p>
             <h1 className="font-serif text-5xl md:text-7xl font-black mb-6 leading-none tracking-tight">
               ONION
@@ -53,7 +53,7 @@ export default function Home() {
             {/* Random */}
             <Link
               href="/random"
-              className="block p-8 border-2 border-ink hover:bg-highlight hover:border-highlight hover:text-cream transition-all group"
+              className="block p-8 border-2 border-ink border-l-4 border-l-highlight hover:bg-highlight hover:border-highlight hover:text-cream transition-all group"
             >
               <p className="font-mono text-xs uppercase tracking-wider text-muted group-hover:text-cream/70 mb-3">
                 Discovery mode
@@ -70,7 +70,7 @@ export default function Home() {
             {todaySlug ? (
               <Link
                 href={`/${todaySlug}`}
-                className="block p-8 border-2 border-ink hover:bg-highlight hover:border-highlight hover:text-cream transition-all group"
+                className="block p-8 border-2 border-ink border-l-4 border-l-highlight hover:bg-highlight hover:border-highlight hover:text-cream transition-all group"
               >
                 <p className="font-mono text-xs uppercase tracking-wider text-muted group-hover:text-cream/70 mb-3">
                   On this day
