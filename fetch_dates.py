@@ -168,7 +168,7 @@ if __name__ == "__main__":
         print()
     
     fetch_dates_for_articles(
-        max_workers=30,      # Adjust based on your needs (more = faster but more server load)
+        max_workers=10,      # Adjust based on your needs (more = faster but more server load)
         save_interval=100,   # Save every 100 dates fetched
         delay=0,           # 100ms delay between requests
         max_articles=max_articles

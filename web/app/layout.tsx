@@ -4,7 +4,19 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Onion History",
-  description: "A cultural archive of The Onion headlines since 1988",
+  description: "28,126 headlines. Zero facts. Lots of laughs. A cultural archive of The Onion headlines since 1988.",
+  metadataBase: new URL("https://onionhistory.com"),
+  openGraph: {
+    title: "Onion History",
+    description: "28,126 headlines. Zero facts. Lots of laughs.",
+    siteName: "Onion History",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Onion History",
+    description: "28,126 headlines. Zero facts. Lots of laughs.",
+  },
 };
 
 export default function RootLayout({

@@ -47,11 +47,13 @@ function generateChoices(correctYear: number): number[] {
   return [...choices].sort(() => Math.random() - 0.5);
 }
 
+type Mode = "browse" | "game";
+
 export default function RandomPage() {
+  const [mode, setMode] = useState<Mode>("browse");
   const [headlineIndex, setHeadlineIndex] = useState<number | null>(null);
   const [choices, setChoices] = useState<number[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
-  const [skipped, setSkipped] = useState(false);
   const [copied, setCopied] = useState(false);
   const [score, setScore] = useState<{ correct: number; total: number }>({
     correct: 0,
@@ -62,7 +64,6 @@ export default function RandomPage() {
     setHeadlineIndex(index);
     setChoices(generateChoices(allHeadlines[index].year));
     setSelected(null);
-    setSkipped(false);
     setCopied(false);
     // Update URL hash with semantic slug
     const slug = generateHeadlineSlug(allHeadlines[index].headline, index);
@@ -87,7 +88,7 @@ export default function RandomPage() {
   }, [loadHeadline, newHeadline]);
 
   const handleSelect = (year: number) => {
-    if (selected !== null || skipped || headlineIndex === null) return;
+    if (selected !== null || headlineIndex === null) return;
     setSelected(year);
     const headline = allHeadlines[headlineIndex];
     if (year === headline.year) {
@@ -97,11 +98,6 @@ export default function RandomPage() {
     }
   };
 
-  const handleSkip = () => {
-    if (selected !== null || skipped) return;
-    setSkipped(true);
-  };
-
   const handleCopyLink = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url);
@@ -109,77 +105,68 @@ export default function RandomPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const switchMode = (newMode: Mode) => {
+    setMode(newMode);
+    setScore({ correct: 0, total: 0 });
+    setSelected(null);
+  };
+
   if (headlineIndex === null) return null;
 
   const headline = allHeadlines[headlineIndex];
-  const isRevealed = selected !== null || skipped;
   const isCorrect = selected === headline.year;
 
   return (
     <>
       <Header />
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-16">
-        <header className="mb-8">
-          <p className="font-mono text-xs uppercase tracking-wider text-muted">
-            Random headline · {headline.tag}
+        {/* Mode Toggle */}
+        <div className="mb-8 max-w-[200px]">
+          <p className="font-mono text-xs uppercase tracking-wider text-muted mb-2">
+            Mode
           </p>
-        </header>
+          <div className="flex border-2 border-ink">
+            <button
+              onClick={() => switchMode("browse")}
+              className={`flex-1 px-4 py-2 font-mono text-sm transition-colors ${
+                mode === "browse"
+                  ? "bg-ink text-cream"
+                  : "bg-cream text-ink hover:bg-rule"
+              }`}
+            >
+              Browse
+            </button>
+            <button
+              onClick={() => switchMode("game")}
+              className={`flex-1 px-4 py-2 font-mono text-sm border-l-2 border-ink transition-colors ${
+                mode === "game"
+                  ? "bg-ink text-cream"
+                  : "bg-cream text-ink hover:bg-rule"
+              }`}
+            >
+              Game
+            </button>
+          </div>
+        </div>
+
+        {/* Tag */}
+        <p className="font-mono text-xs uppercase tracking-wider text-muted mb-4">
+          {headline.tag}
+        </p>
 
         {/* Headline */}
-        <section className="mb-8">
-          <blockquote className="relative text-3xl md:text-4xl font-serif leading-tight mb-6 pl-8 md:pl-12">
-            <span className="absolute left-0 top-0 text-6xl md:text-7xl text-highlight font-serif leading-none -translate-y-2">"</span>
-            {headline.headline}
-          </blockquote>
-          <p className="font-mono text-sm text-muted">
-            Guess the year, or skip to browse.
-          </p>
-        </section>
+        <h1 className="text-3xl md:text-4xl font-serif leading-tight mb-2">
+          {headline.headline}
+        </h1>
 
-        {/* Choices */}
-        {!isRevealed && (
-          <section className="mb-8">
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              {choices.map((year) => (
-                <button
-                  key={year}
-                  onClick={() => handleSelect(year)}
-                  className="py-3 font-mono text-sm border-2 border-ink hover:bg-highlight hover:text-cream hover:border-highlight transition-all cursor-pointer"
-                >
-                  {year}
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={handleSkip}
-              className="font-mono text-sm text-muted hover:text-ink transition-colors"
-            >
-              Skip →
-            </button>
-          </section>
-        )}
+        {/* BROWSE MODE */}
+        {mode === "browse" && (
+          <>
+            <p className="font-mono text-sm text-muted mb-8">
+              {headline.year}
+            </p>
 
-        {/* Result */}
-        {isRevealed && (
-          <section className="mb-8">
-            {skipped ? (
-              <p className="font-mono text-sm text-muted mb-6">
-                Published in <span className="text-ink font-bold">{headline.year}</span>
-              </p>
-            ) : (
-              <p className="font-mono text-sm mb-6">
-                {isCorrect ? (
-                  <span className="text-highlight font-bold">Correct!</span>
-                ) : (
-                  <span>
-                    Nope — it was{" "}
-                    <span className="font-bold">{headline.year}</span>
-                  </span>
-                )}
-              </p>
-            )}
-
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap items-center gap-4">
               <button onClick={newHeadline} className="btn-primary">
                 Next →
               </button>
@@ -187,28 +174,93 @@ export default function RandomPage() {
                 href={headline.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-sm underline underline-offset-4 decoration-highlight hover:decoration-ink py-3"
+                className="font-mono text-sm underline underline-offset-4 decoration-highlight hover:decoration-ink"
               >
                 Read article
               </a>
               <button
                 onClick={handleCopyLink}
-                className="font-mono text-sm text-muted hover:text-ink transition-colors py-3"
+                className="font-mono text-sm text-muted hover:text-ink transition-colors"
               >
-                {copied ? "Copied!" : "Share link"}
+                {copied ? "Copied!" : "Share"}
               </button>
             </div>
-          </section>
+          </>
         )}
 
-        {/* Score */}
-        {score.total > 0 && (
-          <section className="border-t border-rule pt-6">
-            <p className="font-mono text-sm text-muted">
-              Score: <span className="text-ink font-bold">{score.correct}</span>{" "}
-              / {score.total}
-            </p>
-          </section>
+        {/* GAME MODE */}
+        {mode === "game" && (
+          <>
+            {selected === null ? (
+              <>
+                <p className="font-mono text-sm text-muted mb-6">
+                  When was this published?
+                </p>
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                  {choices.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => handleSelect(year)}
+                      className="py-3 font-mono text-sm border-2 border-ink hover:bg-highlight hover:text-cream hover:border-highlight transition-all cursor-pointer"
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={newHeadline}
+                  className="font-mono text-sm text-muted hover:text-ink transition-colors"
+                >
+                  Skip →
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="font-mono text-sm mb-6">
+                  {isCorrect ? (
+                    <span className="text-highlight font-bold">
+                      Correct! It was {headline.year}.
+                    </span>
+                  ) : (
+                    <span>
+                      Nope — it was{" "}
+                      <span className="font-bold">{headline.year}</span>
+                    </span>
+                  )}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <button onClick={newHeadline} className="btn-primary">
+                    Next →
+                  </button>
+                  <a
+                    href={headline.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-sm underline underline-offset-4 decoration-highlight hover:decoration-ink"
+                  >
+                    Read article
+                  </a>
+                  <button
+                    onClick={handleCopyLink}
+                    className="font-mono text-sm text-muted hover:text-ink transition-colors"
+                  >
+                    {copied ? "Copied!" : "Share"}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Score */}
+            {score.total > 0 && (
+              <div className="border-t border-rule pt-6 mt-8">
+                <p className="font-mono text-sm text-muted">
+                  Score: <span className="text-ink font-bold">{score.correct}</span>{" "}
+                  / {score.total}
+                </p>
+              </div>
+            )}
+          </>
         )}
       </main>
       <Footer />

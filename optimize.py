@@ -20,6 +20,7 @@ EXCLUDED_TAGS = {
     "Commentary",
     "Video",
     "Sports",
+    "Infographic",
 }
 
 EXCLUDED_PATTERNS = [

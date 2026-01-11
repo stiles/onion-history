@@ -36,14 +36,14 @@ export default function Home() {
           {/* Hero */}
           <div className="text-center mb-12">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-6">
-              An archive of <em className="text-highlight italic font-bold">The Onion</em> headlines
+              An database of <em className="text-highlight italic font-bold">The Onion</em> headlines
             </p>
             <h1 className="font-serif text-5xl md:text-7xl font-black mb-6 leading-none tracking-tight">
               ONION
               <br />
               <span className="italic font-normal">History</span>
             </h1>
-            <p className="font-mono text-sm text-muted max-w-md mx-auto">
+            <p className="font-mono text-sm text-muted max-w-[260px] md:max-w-md mx-auto">
               {totalHeadlines.toLocaleString()} headlines. Zero facts. Lots of laughs.
             </p>
           </div>
