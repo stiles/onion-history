@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { generateHeadlineSlug, parseHeadlineSlug } from "@/lib/slug";
 import byDayData from "@/data/by-day.json";
 
 interface Headline {
@@ -48,9 +48,6 @@ function generateChoices(correctYear: number): number[] {
 }
 
 export default function RandomPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
   const [headlineIndex, setHeadlineIndex] = useState<number | null>(null);
   const [choices, setChoices] = useState<number[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
@@ -67,8 +64,9 @@ export default function RandomPage() {
     setSelected(null);
     setSkipped(false);
     setCopied(false);
-    // Update URL without navigation
-    window.history.replaceState(null, "", `/random?h=${index}`);
+    // Update URL hash with semantic slug
+    const slug = generateHeadlineSlug(allHeadlines[index].headline, index);
+    window.history.replaceState(null, "", `/random#${slug}`);
   }, []);
 
   const newHeadline = useCallback(() => {
@@ -76,16 +74,17 @@ export default function RandomPage() {
   }, [loadHeadline]);
 
   useEffect(() => {
-    const hParam = searchParams.get("h");
-    if (hParam) {
-      const index = parseInt(hParam, 10);
-      if (!isNaN(index) && index >= 0 && index < allHeadlines.length) {
+    // Check for hash on load
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const index = parseHeadlineSlug(hash);
+      if (index !== null && index >= 0 && index < allHeadlines.length) {
         loadHeadline(index);
         return;
       }
     }
     newHeadline();
-  }, [searchParams, loadHeadline, newHeadline]);
+  }, [loadHeadline, newHeadline]);
 
   const handleSelect = (year: number) => {
     if (selected !== null || skipped || headlineIndex === null) return;
