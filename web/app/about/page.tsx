@@ -1,4 +1,5 @@
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -37,21 +38,7 @@ export default function AboutPage() {
           </p>
         </div>
       </main>
-
-      <footer className="max-w-2xl mx-auto px-4 py-12 text-center font-mono text-xs text-muted border-t border-rule mt-8">
-        <p>
-          All headlines from{" "}
-          <a
-            href="https://theonion.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-ink"
-          >
-            The Onion
-          </a>
-          . This is an unofficial fan project.
-        </p>
-      </footer>
+      <Footer />
     </>
   );
 }

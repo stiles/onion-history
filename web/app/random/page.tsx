@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import byDayData from "@/data/by-day.json";
 
 interface Headline {
@@ -172,6 +173,7 @@ export default function RandomPage() {
           </section>
         )}
       </main>
+      <Footer />
     </>
   );
 }

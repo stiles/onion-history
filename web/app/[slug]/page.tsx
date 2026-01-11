@@ -11,6 +11,7 @@ import { Highlights } from "@/components/Highlights";
 import { FullArchive } from "@/components/FullArchive";
 import { DayNav } from "@/components/DayNav";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -70,21 +71,7 @@ export default async function DayPage({ params }: PageProps) {
 
         <DayNav month={parsed.month} day={parsed.day} />
       </main>
-
-      <footer className="max-w-2xl mx-auto px-4 py-12 text-center font-mono text-xs text-muted border-t border-rule mt-8">
-        <p>
-          All headlines from{" "}
-          <a
-            href="https://theonion.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-ink"
-          >
-            The Onion
-          </a>
-          . This is a fan project.
-        </p>
-      </footer>
+      <Footer />
     </>
   );
 }
