@@ -40,6 +40,27 @@ def save_data(headlines: list[dict]) -> None:
         json.dump(headlines, f, indent=2)
 
 
+def deduplicate_headlines(headlines: list[dict]) -> tuple[list[dict], int]:
+    """Remove duplicate URLs, preferring entries with dates."""
+    seen = {}  # url -> article
+    
+    for h in headlines:
+        url = h.get("url", "")
+        if not url:
+            continue
+            
+        if url not in seen:
+            seen[url] = h
+        else:
+            # Prefer the one with a date
+            existing = seen[url]
+            if not existing.get("date") and h.get("date"):
+                seen[url] = h
+    
+    duplicates_removed = len(headlines) - len(seen)
+    return list(seen.values()), duplicates_removed
+
+
 def filter_headlines(headlines: list[dict]) -> tuple[list[dict], dict]:
     """Filter headlines and return (kept, stats)."""
     kept = []
@@ -76,7 +97,12 @@ def main():
     headlines = load_data()
     print(f"Loaded {len(headlines):,} headlines")
 
-    filtered, removed = filter_headlines(headlines)
+    # Deduplicate first
+    deduped, dup_count = deduplicate_headlines(headlines)
+    print(f"Removed {dup_count:,} duplicate URLs")
+
+    # Then filter
+    filtered, removed = filter_headlines(deduped)
 
     print(f"\nRemoved by tag:")
     for tag, count in sorted(removed["by_tag"].items(), key=lambda x: -x[1]):
@@ -87,7 +113,7 @@ def main():
         print(f"  {pattern}: {count:,}")
 
     total_removed = sum(removed["by_tag"].values()) + sum(removed["by_pattern"].values())
-    print(f"\nTotal: {len(headlines):,} → {len(filtered):,} ({total_removed:,} removed)")
+    print(f"\nTotal: {len(headlines):,} → {len(filtered):,} ({dup_count + total_removed:,} removed)")
 
     if args.dry_run:
         print("\n[Dry run — no changes saved]")

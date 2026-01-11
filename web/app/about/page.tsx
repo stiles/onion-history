@@ -35,10 +35,9 @@ export default function AboutPage() {
 
           <h2 className="text-2xl font-serif font-bold pt-6">Caveats</h2>
           <p>
-            This archive is incomplete. Not all headlines from theonion.com
-            include publication dates, so only dated articles appear on the
+            This archive, pulled from The Onion's <a href="https://theonion.com/latest/">The Latest section</a>, is incomplete. Only dated articles appear on the
             calendar pages. Some categories — like American Voices, horoscopes,
-            editorial cartoons, and video content — are excluded entirely.
+            editorial cartoons and video content — are excluded entirely.
           </p>
           <p>
             There&apos;s no official API or comprehensive data source, so this
@@ -48,7 +47,7 @@ export default function AboutPage() {
 
           <p className="font-mono text-sm text-muted border-l-4 border-highlight pl-4">
             This is an unofficial fan project. All headlines link back to their
-            original source at theonion.com.
+            original source at <a href="https://theonion.com">theonion.com</a>.
           </p>
         </div>
       </main>

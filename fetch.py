@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import time
+import argparse
 from pathlib import Path
 
 def scrape_page(page_num):
@@ -79,13 +80,16 @@ def save_articles(articles, output_file):
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(articles, f, indent=2, ensure_ascii=False)
 
-def scrape_all_pages(start_page=1, max_pages=None, delay=1, save_interval=10, output_file=None, check_page_one=True):
+def scrape_all_pages(start_page=1, max_pages=None, delay=1, save_interval=10, output_file=None, check_page_one=True, fresh=False):
     """Scrape multiple pages with pagination, incremental saving, and resume capability.
     
     Since The Onion paginates in reverse chronological order (page 1 = newest),
     this function will:
     1. Check page 1 for new articles if resuming (since new content appears there)
     2. Continue from the highest page number to get older articles
+    
+    Args:
+        fresh: If True, ignore any existing file and start from scratch
     """
     if output_file is None:
         data_dir = Path('data')
@@ -93,7 +97,11 @@ def scrape_all_pages(start_page=1, max_pages=None, delay=1, save_interval=10, ou
         output_file = data_dir / 'headlines.json'
     
     # Load existing articles and determine starting page
-    all_articles = load_existing_articles(output_file)
+    if fresh:
+        print("Starting fresh fetch (ignoring any existing data)...")
+        all_articles = []
+    else:
+        all_articles = load_existing_articles(output_file)
     existing_urls = get_existing_urls(all_articles)
     last_page = get_last_scraped_page(all_articles)
     
@@ -108,7 +116,7 @@ def scrape_all_pages(start_page=1, max_pages=None, delay=1, save_interval=10, ou
             duplicates = len(articles) - len(new_articles)
             
             if duplicates > 0:
-                print(f"  Skipped {duplicates} duplicate(s) already in database")
+                print(f"  Skipped {duplicates} duplicate(s) already scraped in this run")
             
             if new_articles:
                 all_articles.extend(new_articles)
@@ -144,7 +152,7 @@ def scrape_all_pages(start_page=1, max_pages=None, delay=1, save_interval=10, ou
         duplicates = len(articles) - len(new_articles)
         
         if duplicates > 0:
-            print(f"  Skipped {duplicates} duplicate(s) already in database")
+            print(f"  Skipped {duplicates} duplicate(s) already scraped in this run")
         
         if new_articles:
             all_articles.extend(new_articles)
@@ -172,4 +180,22 @@ def scrape_all_pages(start_page=1, max_pages=None, delay=1, save_interval=10, ou
     print(f"\nSaved {len(all_articles)} articles to {output_file}")
 
 if __name__ == "__main__":
-    scrape_all_pages(start_page=1, delay=1, save_interval=10)
+    parser = argparse.ArgumentParser(description='Scrape The Onion headlines')
+    parser.add_argument('--fresh', action='store_true', help='Start fresh, ignoring any existing data file')
+    parser.add_argument('--start-page', type=int, default=1, help='Starting page number (default: 1)')
+    parser.add_argument('--max-pages', type=int, default=None, help='Maximum number of pages to scrape')
+    parser.add_argument('--delay', type=float, default=1, help='Delay between requests in seconds (default: 1)')
+    parser.add_argument('--save-interval', type=int, default=10, help='Save progress every N pages (default: 10)')
+    parser.add_argument('--output', type=str, default=None, help='Output file path (default: data/headlines.json)')
+    
+    args = parser.parse_args()
+    
+    output_file = Path(args.output) if args.output else None
+    scrape_all_pages(
+        start_page=args.start_page,
+        max_pages=args.max_pages,
+        delay=args.delay,
+        save_interval=args.save_interval,
+        output_file=output_file,
+        fresh=args.fresh
+    )

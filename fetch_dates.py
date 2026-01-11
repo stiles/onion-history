@@ -8,8 +8,11 @@ from threading import Lock
 
 def extract_date_from_url(url):
     """Extract date from an article URL."""
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=10, headers=headers)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         
@@ -28,7 +31,7 @@ def extract_date_from_url(url):
         print(f"  Error parsing {url}: {e}")
         return None
 
-def process_article(article, url_to_index, lock, save_counter, save_interval, all_articles, output_file):
+def process_article(article, url_to_index, lock, save_counter, save_interval, all_articles, output_file, found_counter):
     """Process a single article to fetch its date."""
     url = article.get('url')
     
@@ -37,6 +40,7 @@ def process_article(article, url_to_index, lock, save_counter, save_interval, al
         return None
     
     if not url:
+        print(f"  No URL for article")
         return None
     
     date = extract_date_from_url(url)
@@ -47,8 +51,12 @@ def process_article(article, url_to_index, lock, save_counter, save_interval, al
             idx = url_to_index.get(url)
             if idx is not None:
                 all_articles[idx]['date'] = date
+                print(f"  ✓ Found date for idx {idx}: {date[:10]}")
+            else:
+                print(f"  ✗ URL not in index: {url[:50]}")
             
             save_counter[0] += 1
+            found_counter[0] += 1
             
             # Incremental save
             if save_counter[0] % save_interval == 0:
@@ -56,6 +64,8 @@ def process_article(article, url_to_index, lock, save_counter, save_interval, al
                 save_articles(all_articles, output_file)
         
         return date
+    else:
+        print(f"  ✗ No date found: {url[:50]}")
     
     return None
 
@@ -111,8 +121,9 @@ def fetch_dates_for_articles(input_file=None, output_file=None, max_workers=10, 
     # Create URL to index mapping for fast lookup
     url_to_index = {a.get('url'): i for i, a in enumerate(articles)}
     
-    # Thread-safe counter and lock
+    # Thread-safe counters and lock
     save_counter = [0]
+    found_counter = [0]
     lock = Lock()
     
     print(f"Starting to fetch dates with {max_workers} concurrent workers...")
@@ -132,7 +143,8 @@ def fetch_dates_for_articles(input_file=None, output_file=None, max_workers=10, 
                     save_counter,
                     save_interval,
                     articles,
-                    output_file
+                    output_file,
+                    found_counter
                 )
                 futures.append(future)
                 time.sleep(delay)  # Rate limiting
@@ -142,7 +154,7 @@ def fetch_dates_for_articles(input_file=None, output_file=None, max_workers=10, 
             for future in as_completed(futures):
                 completed += 1
                 if completed % 50 == 0:
-                    print(f"Processed {completed}/{total_needing_dates} articles...")
+                    print(f"Processed {completed}/{total_needing_dates} articles... (found {found_counter[0]} dates)")
     except KeyboardInterrupt:
         print("\n\nInterrupted! Saving progress...")
     finally:
@@ -167,8 +179,8 @@ if __name__ == "__main__":
         print()
     
     fetch_dates_for_articles(
-        max_workers=10,      # Adjust based on your needs (more = faster but more server load)
-        save_interval=1000,   # Save every 100 dates fetched
-        delay=0,           # 100ms delay between requests
+        max_workers=30,       # Reduced to avoid rate limiting
+        save_interval=100,   # Save every 100 dates fetched
+        delay=0,           # 200ms delay between requests
         max_articles=max_articles
     )
