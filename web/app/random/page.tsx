@@ -103,10 +103,10 @@ export default function RandomPage() {
 
         {/* Headline */}
         <section className="mb-8">
+        <p className="font-mono text-sm text-muted">{headline.tag}</p>
           <blockquote className="text-2xl md:text-3xl font-serif leading-tight mb-4">
             "{headline.headline}"
           </blockquote>
-          <p className="font-mono text-sm text-muted">{headline.tag}</p>
         </section>
 
         {/* Choices */}

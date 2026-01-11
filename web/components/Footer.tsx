@@ -2,23 +2,23 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-cream mt-16">
+    <footer className="bg-ink text-cream mt-16 font-sans">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
           {/* Project info */}
           <div className="max-w-md">
             <h3 className="font-serif text-xl font-bold mb-3">Onion History</h3>
-            <p className="text-cream/70 text-sm leading-relaxed mb-4">
-              A cultural archive of <em>The Onion</em> headlines, browsable by
-              calendar date. See what absurdities were manufactured on any given
-              day across 30+ years.
+            <p className="text-cream/80 text-sm leading-relaxed mb-4">
+              A cultural archive of The Onion headlines, browsable by calendar
+              date. See what absurdities were manufactured on any given day
+              across 30+ years.
             </p>
             <div className="flex items-center gap-4">
               <a
                 href="https://github.com/stiles/onion-history"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cream/70 hover:text-cream transition-colors"
+                className="text-cream/60 hover:text-cream transition-colors"
                 aria-label="GitHub"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -29,7 +29,7 @@ export function Footer() {
                 href="https://twitter.com/stiles"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cream/70 hover:text-cream transition-colors"
+                className="text-cream/60 hover:text-cream transition-colors"
                 aria-label="Twitter"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -40,7 +40,7 @@ export function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex gap-8 font-mono text-sm">
+          <div className="flex gap-12 text-sm">
             <div>
               <h4 className="text-cream/50 uppercase tracking-wider text-xs mb-3">
                 Site
@@ -49,7 +49,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/random"
-                    className="text-cream/70 hover:text-cream transition-colors"
+                    className="text-cream/80 hover:text-cream transition-colors"
                   >
                     Random
                   </Link>
@@ -57,7 +57,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/about"
-                    className="text-cream/70 hover:text-cream transition-colors"
+                    className="text-cream/80 hover:text-cream transition-colors"
                   >
                     About
                   </Link>
@@ -67,7 +67,7 @@ export function Footer() {
                     href="https://github.com/stiles/onion-history"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-cream/70 hover:text-cream transition-colors"
+                    className="text-cream/80 hover:text-cream transition-colors"
                   >
                     Code
                   </a>
@@ -84,7 +84,7 @@ export function Footer() {
                     href="https://mattstiles.me"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-cream/70 hover:text-cream transition-colors"
+                    className="text-cream/80 hover:text-cream transition-colors"
                   >
                     Matt Stiles
                   </a>
@@ -106,7 +106,7 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-cream/10 mt-8 pt-8 text-center">
-          <p className="text-cream/50 text-xs">
+          <p className="text-cream/60 text-xs">
             All headlines from{" "}
             <a
               href="https://theonion.com"
