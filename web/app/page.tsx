@@ -44,8 +44,7 @@ export default function Home() {
               <span className="italic font-normal">History</span>
             </h1>
             <p className="font-mono text-sm text-muted max-w-md mx-auto">
-              Browser {totalHeadlines.toLocaleString()} headlines. Every day is a good
-              day to remember what didn't happen.
+              {totalHeadlines.toLocaleString()} headlines. Zero facts. Lots of laughs.
             </p>
           </div>
 
