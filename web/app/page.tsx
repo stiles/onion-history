@@ -36,7 +36,7 @@ export default function Home() {
           {/* Hero */}
           <div className="text-center mb-12">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-6">
-              Decades of online satire, indexed
+              An archive of The Onion headlines
             </p>
             <h1 className="font-serif text-5xl md:text-7xl font-black mb-6 leading-none tracking-tight">
               ONION
@@ -44,7 +44,7 @@ export default function Home() {
               <span className="italic font-normal">History</span>
             </h1>
             <p className="font-mono text-sm text-muted max-w-md mx-auto">
-              {totalHeadlines.toLocaleString()} headlines. Every day is a good
+              Browser {totalHeadlines.toLocaleString()} headlines. Every day is a good
               day to remember what didn't happen.
             </p>
           </div>
