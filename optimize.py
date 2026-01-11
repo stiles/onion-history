@@ -18,7 +18,8 @@ EXCLUDED_TAGS = {
     "American Voices",
     "Cartoons",
     "Commentary",
-    "Video"
+    "Video",
+    "Sports",
 }
 
 EXCLUDED_PATTERNS = [

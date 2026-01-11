@@ -32,6 +32,20 @@ export default function AboutPage() {
             1998 feel like they were written yesterday, which is either funny or
             depressing.
           </p>
+
+          <h2 className="text-2xl font-serif font-bold pt-6">Caveats</h2>
+          <p>
+            This archive is incomplete. Not all headlines from theonion.com
+            include publication dates, so only dated articles appear on the
+            calendar pages. Some categories — like American Voices, horoscopes,
+            editorial cartoons, and video content — are excluded entirely.
+          </p>
+          <p>
+            There&apos;s no official API or comprehensive data source, so this
+            represents a best-effort scrape. If your favorite headline is
+            missing, it&apos;s probably one of the undated ones. Sorry about that.
+          </p>
+
           <p className="font-mono text-sm text-muted border-l-4 border-highlight pl-4">
             This is an unofficial fan project. All headlines link back to their
             original source at theonion.com.
