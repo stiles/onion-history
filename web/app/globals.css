@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 17px;
+  }
+  
+  body {
+    @apply bg-cream text-ink leading-relaxed;
+  }
+
+  ::selection {
+    @apply bg-highlight text-ink;
+  }
+}
+
+@layer components {
+  .headline-link {
+    @apply underline decoration-2 underline-offset-4 decoration-highlight hover:decoration-ink transition-all;
+  }
+
+  .btn-primary {
+    @apply inline-block bg-highlight text-cream px-6 py-3 font-mono text-sm uppercase tracking-wider 
+           hover:bg-ink transition-all border-2 border-highlight hover:border-ink;
+  }
+
+  .section-label {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-muted;
+  }
+}
