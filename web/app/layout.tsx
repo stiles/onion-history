@@ -4,18 +4,27 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Onion History",
-  description: "28,126 headlines. Zero facts. Lots of laughs. A cultural archive of The Onion headlines since 1988.",
+  description: "35,000 headlines. Zero facts. Lots of laughs. A cultural archive of The Onion headlines since 1988.",
   metadataBase: new URL("https://onionhistory.com"),
   openGraph: {
     title: "Onion History",
-    description: "28,126 headlines. Zero facts. Lots of laughs.",
+    description: "35,000 headlines. Zero facts. Lots of laughs.",
     siteName: "Onion History",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Onion History - An archive of The Onion headlines",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Onion History",
-    description: "28,126 headlines. Zero facts. Lots of laughs.",
+    description: "35,000 headlines. Zero facts. Lots of laughs.",
+    images: ["/og-image.png"],
   },
 };
 

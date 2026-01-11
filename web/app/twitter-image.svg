@@ -1,29 +1,68 @@
-<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#fffbeb"/>
-  
-  <!-- Green accent bar -->
-  <rect x="0" y="0" width="8" height="630" fill="#047857"/>
-  
-  <!-- Main title -->
-  <text x="600" y="240" font-family="Georgia, 'Times New Roman', serif" font-size="120" font-weight="900" fill="#0f0f0f" text-anchor="middle" letter-spacing="-2">
-    ONION
-  </text>
-  <text x="600" y="340" font-family="Georgia, 'Times New Roman', serif" font-size="100" font-style="italic" font-weight="400" fill="#0f0f0f" text-anchor="middle">
-    History
-  </text>
-  
-  <!-- Subtitle -->
-  <text x="600" y="420" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="32" fill="#0f0f0f" text-anchor="middle">
-    An archive of The Onion headlines
-  </text>
-  
-  <!-- Tagline -->
-  <text x="600" y="480" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="26" fill="#737373" text-anchor="middle">
-    28,126 headlines. Zero facts. Lots of laughs.
-  </text>
-  
-  <!-- URL -->
-  <text x="600" y="580" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="24" fill="#047857" text-anchor="middle">
-    onionhistory.com
-  </text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1200 630">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fffbeb;
+      }
+
+      .cls-2 {
+        font-family: Georgia-Bold, Georgia;
+        font-size: 120px;
+        letter-spacing: 0em;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        isolation: isolate;
+      }
+
+      .cls-2, .cls-4, .cls-5 {
+        fill: #0f0f0f;
+      }
+
+      .cls-2, .cls-6 {
+        font-weight: 700;
+      }
+
+      .cls-3 {
+        fill: #737373;
+        font-size: 26px;
+      }
+
+      .cls-3, .cls-5 {
+        font-family: Menlo-Regular, Menlo;
+      }
+
+      .cls-4 {
+        font-family: Georgia-Italic, Georgia;
+        font-size: 100px;
+        font-style: italic;
+      }
+
+      .cls-5 {
+        font-size: 32px;
+      }
+
+      .cls-7, .cls-6 {
+        fill: #047857;
+      }
+
+      .cls-6 {
+        font-family: Menlo-Bold, Menlo;
+        font-size: 24px;
+      }
+    </style>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.7.2, SVG Export Plug-In . SVG Version: 1.2.0 Build 154)  -->
+  <g>
+    <g id="Layer_1">
+      <rect class="cls-1" width="1200" height="630"/>
+      <rect class="cls-7" width="8" height="630"/>
+      <text class="cls-2" transform="translate(379.2 240)"><tspan x="0" y="0">ONION</tspan></text>
+      <text class="cls-4" transform="translate(427.6 340)"><tspan x="0" y="0">History</tspan></text>
+      <text class="cls-5" transform="translate(210.4 423)"><tspan x="0" y="0">Explore an archive of The Onion headlines</tspan></text>
+      <text class="cls-3" transform="translate(247.8 480)"><tspan x="0" y="0">35,000 headlines. Zero facts. Lots of laughs.</tspan></text>
+      <text class="cls-6" transform="translate(484.4 580)"><tspan x="0" y="0">onionhistory.com</tspan></text>
+    </g>
+  </g>
 </svg>
