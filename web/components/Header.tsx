@@ -12,6 +12,12 @@ export function Header() {
         </Link>
         <nav className="flex items-center gap-6 font-mono text-xs uppercase tracking-wider">
           <Link
+            href="/random"
+            className="text-muted hover:text-ink transition-colors"
+          >
+            Random
+          </Link>
+          <Link
             href="/about"
             className="text-muted hover:text-ink transition-colors"
           >
