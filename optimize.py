@@ -16,7 +16,9 @@ DATA_PATH = Path("data/headlines.json")
 # Filters to apply
 EXCLUDED_TAGS = {
     "American Voices",
-    "Cartoons"
+    "Cartoons",
+    "Commentary",
+    "Video"
 }
 
 EXCLUDED_PATTERNS = [
