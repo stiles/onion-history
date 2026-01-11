@@ -35,12 +35,6 @@ export function Header() {
           >
             Random
           </Link>
-          <Link
-            href="/about"
-            className="text-muted hover:text-ink transition-colors"
-          >
-            About
-          </Link>
         </nav>
       </div>
     </header>
